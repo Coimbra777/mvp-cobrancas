@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\Route;
 use Inertia\Testing\AssertableInertia as Assert;
 use RuntimeException;
@@ -50,6 +51,16 @@ class PaginasDeErroTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page->component('Erro')->where('status', 500))
             ->assertDontSee('detalhe interno secreto')
             ->assertDontSee('RuntimeException');
+    }
+
+    public function test_erro_interno_e_registrado_no_log(): void
+    {
+        config(['app.debug' => false]);
+        Exceptions::fake();
+
+        $this->actingAs(User::factory()->create())->get('/_teste-500')->assertStatus(500);
+
+        Exceptions::assertReported(fn (RuntimeException $e) => $e->getMessage() === 'detalhe interno secreto');
     }
 
     public function test_erro_interno_com_debug_mantem_o_diagnostico(): void

@@ -20,5 +20,6 @@ createInertiaApp({
             .use(plugin)
             .mount(el);
     },
-    progress: { color: '#1D6B5F', delay: 250 },
+    // A barra de progresso aceita qualquer valor CSS: usa o token da marca (acompanha o tema).
+    progress: { color: 'var(--cor-marca)', delay: 250 },
 });

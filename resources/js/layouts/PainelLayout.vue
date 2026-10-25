@@ -317,7 +317,7 @@ onBeforeUnmount(() => {
     background: var(--cor-superficie);
     border: 1px solid var(--cor-borda-controle);
     border-radius: var(--raio-lg);
-    box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
+    box-shadow: var(--sombra-menu);
 }
 
 /* ---------- Desktop: a partir de 1024px ---------- */
