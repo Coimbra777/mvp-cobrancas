@@ -18,47 +18,43 @@ context: |
   - Agendamento: scheduler do Laravel com uma única linha de cron documentada.
   - O repositório nasceu do boilerplate Laravel 10 (sem correções de segurança). Atualização só com aprovação.
 
-  ## Trabalho existente (Fase 2, base válida)
-  QR Code Pix ESTÁTICO do Asaas por parcela (POST /v3/pix/qrCodes/static, allowsMultiplePayments=false,
-  externalReference `cobranca_pix:{id}`, expiração no fim do dia do vencimento ou do dia, para atrasadas),
-  troca de QR Code (DELETE do anterior, status `substituida`), webhook POST /webhooks/asaas (valida
-  `asaas-access-token`, idempotência pelo id do evento, baixa pelo pixQrCodeId, `value` como recebido,
-  `netValue` guardado), página pública /p/{token} em Blade, comandos cobrancas:gerar, webhook:simular,
-  webhook:reprocessar e asaas:chave-pix. Models: Cliente, Emprestimo, Parcela, CobrancaPix, EventoWebhook.
+  ## Escopo atual: MVP de validação com o cliente (o mais simples possível)
+  1. Login do usuário único.
+  2. Clientes: listar e cadastrar (nome, telefone).
+  3. Empréstimos: cliente, valor, taxa mensal, método (simples | composto), nº de parcelas, 1º vencimento.
+     Ao salvar, gera as parcelas. Página do empréstimo lista as parcelas.
+  4. Cobranças: parcelas em aberto (filtro atrasadas / a vencer), botão "Dar baixa" (paga hoje, sem parcial)
+     e botão "Enviar no WhatsApp" (wa.me com nome, parcela, valor, vencimento e link /p/{token}).
+  5. Fase 2 mantida: QR Code Pix ESTÁTICO do Asaas (cobrancas:gerar diário, janela de 5 dias,
+     allowsMultiplePayments=false, externalReference `cobranca_pix:{id}`, expiração no fim do dia), troca de
+     QR Code da parcela atrasada ao abrir /p/{token} (valor original), webhook POST /webhooks/asaas (valida
+     `asaas-access-token`, idempotência pelo id do evento e pelo id do pagamento, baixa pelo pixQrCodeId,
+     `value` recebido e `netValue` guardados; falha responde 500 para o Asaas reenviar).
+  Fora do escopo: lembretes/consentimento/fila, juros de atraso, pagamento parcial, renegociação, Pix direto,
+  tabela de configurações (usar .env), backup automático, painel com indicadores, seletor de tema, Vitest.
   Não copiar código do projeto antigo de integração (projeto-A).
 
   ## Regras de negócio
   - Dinheiro SEMPRE em centavos inteiros. Datas em America/Fortaleza.
-  - Cliente: nome, telefone, observação, situação dos lembretes (pendente | ativo | recusou), data do aceite.
-  - Empréstimo: cliente, valor, data, taxa mensal configurável, método (simples | composto), nº de parcelas,
-    primeiro vencimento. Parcelas no mesmo dia dos meses seguintes, sem estouro em 29–31.
   - Cálculo: simples = principal × (1 + i×n); composto = principal × (1+i)^n; total arredondado UMA vez,
-    dividido em parcelas iguais, diferença de centavos na última. Prévia antes de salvar.
-  - Renegociação: altera data e/ou valor das parcelas em aberto (valor nunca menor que o já pago), registra a data.
-  - Juros de atraso: valor em aberto × (taxa mensal configurável / 30) × dias de atraso, arredondado em
-    centavos (padrão 2% a.m.) → "valor atualizado".
-  - Baixa manual (dinheiro, Pix direto, parcial): valor > 0 e até o valor atualizado; data não futura.
-  - Situações da parcela: paga, parcial, atrasada, vence hoje, vence em breve, a vencer.
+    dividido em parcelas iguais, diferença de centavos na última.
+  - Vencimentos no mesmo dia dos meses seguintes, sempre a partir do 1º vencimento, sem estouro em 29–31
+    (usa o último dia do mês).
   - Asaas recebe só o valor final da parcela. Nunca enviar fine/interest.
-  - Lembretes (MVP): 5 dias antes, no dia e no atraso (3, 5 ou 7 dias, configurável). "Fila de um toque":
-    o Dario envia pelo próprio WhatsApp (link wa.me com mensagem pronta + link da página de pagamento).
-    Registrar cada envio, nunca repetir parcela+tipo, parcela paga sai da fila, respeitar a situação de
-    lembretes do cliente. Envio projetado como interface com drivers (manual agora; PlugLead/Meta depois).
-  - Painel: saldo a receber, recebido, a vencer, em atraso, vencimentos da semana, listas de atrasadas e da
-    semana, lembretes de hoje e avisos recentes.
+  - Situações da parcela: aberta | paga (atrasada e a vencer são calculadas pelo vencimento).
 
   ## Não funcionais
-  - pt-BR em toda a interface. WCAG 2.2 AA (teclado, foco visível, contraste, labels, status não só por cor).
-  - Responsivo, celular primeiro. Tema claro/escuro.
-  - Segredos só no .env; .env.example só com placeholders. Backup diário do banco fora da hospedagem.
-  - Testes: PHPUnit no back (cálculos, juros, baixa, webhook, fila de lembretes);
-    Vitest + Vue Test Utils no front (componentes e fluxos principais).
+  - pt-BR na interface. Acessibilidade básica (labels, foco visível, contraste, status não só por cor).
+  - Responsivo, celular primeiro. Tema escuro automático pelo sistema operacional.
+  - Segredos só no .env; .env.example só com placeholders.
+  - Testes PHPUnit só para: cálculo das parcelas (simples e composto) e webhook (token, idempotência, baixa).
+    Front: só vue-tsc no build.
 
   ## Convenções
-  - Código simples e legível, sem abstrações além das pedidas (a interface de drivers de lembrete é intencional).
+  - Laravel padrão: models, form requests, controllers enxutos. Services só para o cálculo das parcelas e o Asaas.
   - Back: nomes de domínio em português (models, tabelas, colunas, comandos), como na Fase 2.
   - Front: páginas Inertia em `resources/js/pages`, layouts em `resources/js/layouts`, componentes em
-    `resources/js/components` (minúsculas, padrão do Inertia 3); TypeScript fixado em ~6.0 (vue-tsc);
+    `resources/js/components` (minúsculas, padrão do Inertia 3), poucos componentes; TypeScript ~6.0 (vue-tsc);
     textos de interface em pt-BR.
   - Git: uma branch por change (`change/<nome>`), commits pequenos em português no imperativo, PR para `main`
     com revisão antes do merge; `/opsx:archive` no mesmo PR. Sem push forçado na `main`, sem arquivos compilados.
