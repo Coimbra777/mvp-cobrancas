@@ -2,7 +2,7 @@
 
 ## 1. Atualização do Laravel para 13 / PHP 8.3 (só após aprovação; se recusada, aplicar o plano B do design D1)
 
-- [ ] 1.1 Atualizar o Docker para `php:8.3-fpm` e `mysql:8.4`, remover o serviço redis sem uso e fixar `config.platform.php = 8.3.0` no `composer.json`. Pronto quando `docker-compose exec app php -v` mostra 8.3 e os 24 testes da Fase 2 passam.
+- [x] 1.1 Atualizar o Docker para `php:8.3-fpm` e `mysql:8.4`, remover o serviço redis sem uso e fixar `config.platform.php = 8.3.0` no `composer.json`. Pronto quando `docker-compose exec app php -v` mostra 8.3 e os 24 testes da Fase 2 passam.
 - [ ] 1.2 Subir para Laravel 11 seguindo o guia oficial, mantendo a estrutura atual de pastas. Pronto quando `composer update` conclui sem conflito, `php artisan about` mostra 11.x e os 24 testes passam (commit próprio).
 - [ ] 1.3 Subir para Laravel 12 seguindo o guia oficial. Pronto quando `php artisan about` mostra 12.x e os 24 testes passam (commit próprio).
 - [ ] 1.4 Subir para Laravel 13 seguindo o guia oficial. Pronto quando `php artisan about` mostra 13.x e os 24 testes passam (commit próprio).
