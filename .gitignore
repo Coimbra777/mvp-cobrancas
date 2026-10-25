@@ -1,0 +1,38 @@
+# Dependências
+/node_modules
+/vendor
+
+# Assets compilados (sobem no deploy, não no git)
+/public/build
+/public/hot
+/public/storage
+
+# Ambiente e segredos
+.env
+.env.*
+!.env.example
+/storage/*.key
+auth.json
+
+# Logs, caches e bancos locais
+*.log
+.phpunit.result.cache
+/.phpunit.cache
+*.sqlite
+*.sqlite3
+/database/*.sqlite*
+
+# Docker local
+/.docker
+docker-compose.override.yml
+
+# Editores e SO
+/.idea
+/.vscode
+/.fleet
+/.zed
+.DS_Store
+Thumbs.db
+
+Homestead.json
+Homestead.yaml
