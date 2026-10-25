@@ -16,13 +16,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // Duas vezes ao dia: se a primeira falhar, a segunda (e os dias seguintes) recuperam.
+        // Uma vez por dia: a janela de 5 dias recupera, no dia seguinte, o que falhar hoje.
         $schedule->command('cobrancas:gerar')
-            ->twiceDaily(7, 13)
+            ->dailyAt('07:00')
             ->timezone('America/Fortaleza')
             ->withoutOverlapping();
-
-        $schedule->command('webhook:reprocessar')->hourly()->withoutOverlapping();
     }
 
     /**

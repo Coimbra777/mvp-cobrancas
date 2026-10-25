@@ -11,10 +11,10 @@
         "verbatimModuleSyntax": true,
         "skipLibCheck": true,
         "noEmit": true,
-        "types": ["vite/client", "node"],
+        "types": ["vite/client"],
         "paths": {
             "@/*": ["./resources/js/*"]
         }
     },
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.vue", "tests/js/**/*.ts", "vite.config.ts", "vitest.config.ts"]
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.vue"]
 }
