@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import { LoaderCircle } from '@lucide/vue';
 
 const props = withDefaults(
@@ -8,6 +9,8 @@ const props = withDefaults(
         carregando?: boolean;
         desabilitado?: boolean;
         larguraTotal?: boolean;
+        // Com href, vira um link do Inertia com aparência de botão (navegação, não ação).
+        href?: string;
     }>(),
     { variante: 'secundaria', tipo: 'button', carregando: false, desabilitado: false, larguraTotal: false },
 );
@@ -25,7 +28,11 @@ function aoClicar(evento: MouseEvent) {
 </script>
 
 <template>
+    <Link v-if="href" :href="href" class="botao" :class="[`botao--${variante}`, { 'botao--largura-total': larguraTotal }]">
+        <slot />
+    </Link>
     <button
+        v-else
         :type="tipo"
         class="botao"
         :class="[`botao--${variante}`, { 'botao--largura-total': larguraTotal }]"

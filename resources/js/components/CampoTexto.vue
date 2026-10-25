@@ -11,6 +11,7 @@ const props = withDefaults(
         autocomplete?: string;
         obrigatorio?: boolean;
         icone?: Component;
+        inputmode?: 'text' | 'decimal' | 'numeric' | 'tel' | 'email';
     }>(),
     { tipo: 'text', erro: null, obrigatorio: false },
 );
@@ -44,6 +45,7 @@ defineExpose({ focar: () => entrada.value?.focus() });
                 :class="{ 'campo__entrada--com-icone': icone }"
                 :type="tipo"
                 :autocomplete="autocomplete"
+                :inputmode="inputmode"
                 :required="obrigatorio"
                 :aria-invalid="erro ? 'true' : undefined"
                 :aria-describedby="descritoPor"
