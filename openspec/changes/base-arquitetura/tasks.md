@@ -29,7 +29,7 @@
 ## 5. Autenticação do usuário único
 
 - [x] 5.1 Criar o comando `caderneta:usuario` (pergunta nome e e-mail, senha via `secret`, mínimo de 10 caracteres, cria ou atualiza a única linha de `users`). Pronto quando os testes cobrem primeira execução, redefinição mantendo 1 usuário e recusa de senha curta.
-- [ ] 5.2 Criar `LoginController` e `LoginRequest` (validação em pt-BR, limite de 5 tentativas por e-mail+IP, "Manter conectado", `regenerate`, `intended('/painel')`), as rotas `GET|POST /entrar` (`guest`) e `POST /sair` (`auth`), e ajustar os redirecionamentos de `Authenticate` e `RedirectIfAuthenticated`. Pronto quando os testes PHP cobrem todos os cenários da spec `autenticacao`, incluindo `GET /sair` sem efeito e 404 em `/register`, `/cadastro` e `/forgot-password`.
+- [x] 5.2 Criar `LoginController` e `LoginRequest` (validação em pt-BR, limite de 5 tentativas por e-mail+IP, "Manter conectado", `regenerate`, `intended('/painel')`), as rotas `GET|POST /entrar` (`guest`) e `POST /sair` (`auth`), e ajustar os redirecionamentos de `Authenticate` e `RedirectIfAuthenticated`. Pronto quando os testes PHP cobrem todos os cenários da spec `autenticacao`, incluindo `GET /sair` sem efeito e 404 em `/register`, `/cadastro` e `/forgot-password`.
 - [ ] 5.3 Criar `VisitanteLayout` e a página `Entrar.vue` com os componentes base (rótulos, mensagem genérica de erro, foco no primeiro campo com erro, botão em estado carregando durante o envio). Pronto quando o teste Vitest cobre a exibição de erros, o foco e o `axe`, e o login funciona no navegador pelo Docker.
 
 ## 6. Casca do painel

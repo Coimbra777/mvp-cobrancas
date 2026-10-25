@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\Site\SiteController;
 use App\Http\Controllers\WebhookAsaasController;
@@ -21,6 +22,14 @@ Route::get('/', function () {
 });
 
 Route::get('/contato', [SiteController::class, 'contato'])->name('site.contato');
+
+// Acesso do único usuário (sem cadastro público nem recuperação de senha)
+Route::middleware('guest')->group(function () {
+    Route::get('/entrar', [LoginController::class, 'create'])->name('entrar');
+    Route::post('/entrar', [LoginController::class, 'store']);
+});
+
+Route::post('/sair', [LoginController::class, 'destroy'])->middleware('auth')->name('sair');
 
 // Página pública de pagamento da parcela (token aleatório, nunca o id)
 Route::get('/p/{token}', [PagamentoController::class, 'show'])
