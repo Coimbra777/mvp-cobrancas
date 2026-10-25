@@ -26,7 +26,7 @@
 
 ## 6. Documentação e verificação
 
-- [ ] 6.1 Reescrever o README curto (setup, `.env`, testes, build, deploy; PHP 8.3+). Pronto quando os passos de setup funcionam.
+- [x] 6.1 Reescrever o README curto (setup, `.env`, testes, build, deploy; PHP 8.3+). Pronto quando os passos de setup funcionam.
 - [ ] 6.2 Rodar `php artisan test`, `npm run build` e `openspec validate mvp-validacao --strict`, e fazer a verificação manual no navegador dos fluxos 1 a 5 (inclusive `/p/{token}` e uma baixa pelo webhook com um POST de teste via `curl`). Pronto quando tudo passa.
 
 ## Workflow follow-up
