@@ -60,6 +60,17 @@ class Parcela extends Model
         return $this->status === ParcelaStatus::Aberta;
     }
 
+    /** Situação exibida no painel: paga, atrasada, vence-hoje ou a-vencer. */
+    public function situacao(): string
+    {
+        return match (true) {
+            ! $this->estaAberta() => 'paga',
+            $this->vencimento->lt(today()) => 'atrasada',
+            $this->vencimento->isSameDay(today()) => 'vence-hoje',
+            default => 'a-vencer',
+        };
+    }
+
     public function diasAtraso(CarbonInterface $dia): int
     {
         $dia = $dia->copy()->startOfDay();

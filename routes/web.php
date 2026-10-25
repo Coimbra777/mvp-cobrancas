@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CobrancaController;
+use App\Http\Controllers\EmprestimoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\WebhookAsaasController;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/painel');
+Route::redirect('/', '/cobrancas');
 
 // Acesso do único usuário (sem cadastro público nem recuperação de senha)
 Route::middleware('guest')->group(function () {
@@ -28,13 +31,16 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/sair', [LoginController::class, 'destroy'])->name('sair');
 
-    // Áreas ainda provisórias; cada change troca a sua pela página real.
-    Route::inertia('/painel', 'EmConstrucao', ['titulo' => 'Painel'])->name('painel');
-    Route::inertia('/clientes', 'EmConstrucao', ['titulo' => 'Clientes'])->name('clientes');
-    Route::inertia('/emprestimos', 'EmConstrucao', ['titulo' => 'Empréstimos'])->name('emprestimos');
-    Route::inertia('/parcelas', 'EmConstrucao', ['titulo' => 'Parcelas'])->name('parcelas');
-    Route::inertia('/lembretes', 'EmConstrucao', ['titulo' => 'Lembretes'])->name('lembretes');
-    Route::inertia('/configuracoes', 'EmConstrucao', ['titulo' => 'Configurações'])->name('configuracoes');
+    Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
+    Route::post('/clientes', [ClienteController::class, 'store'])->name('clientes.store');
+
+    Route::get('/emprestimos', [EmprestimoController::class, 'index'])->name('emprestimos.index');
+    Route::get('/emprestimos/novo', [EmprestimoController::class, 'create'])->name('emprestimos.create');
+    Route::post('/emprestimos', [EmprestimoController::class, 'store'])->name('emprestimos.store');
+    Route::get('/emprestimos/{emprestimo}', [EmprestimoController::class, 'show'])->whereNumber('emprestimo')->name('emprestimos.show');
+
+    Route::get('/cobrancas', [CobrancaController::class, 'index'])->name('cobrancas.index');
+    Route::post('/parcelas/{parcela}/baixa', [CobrancaController::class, 'baixa'])->name('parcelas.baixa');
 });
 
 // Página pública de pagamento da parcela (token aleatório, nunca o id)

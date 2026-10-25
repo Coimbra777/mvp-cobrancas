@@ -18,11 +18,11 @@
 ## 4. Clientes e empréstimos
 
 - [x] 4.1 Criar o `CalculoParcelas` com os testes de unidade da spec `emprestimos`. Pronto quando o `CalculoParcelasTest` passa.
-- [ ] 4.2 Criar as rotas, os `FormRequests`, os controllers e as páginas de Clientes (listar/cadastrar) e Empréstimos (listar/novo/mostrar), com o componente `CampoSelecao`. Pronto quando o cadastro funciona no navegador e gera as parcelas certas.
+- [x] 4.2 Criar as rotas, os `FormRequests`, os controllers e as páginas de Clientes (listar/cadastrar) e Empréstimos (listar/novo/mostrar), com o componente `CampoSelecao`. Pronto quando o cadastro funciona no navegador e gera as parcelas certas.
 
 ## 5. Cobranças e navegação
 
-- [ ] 5.1 Criar a página Cobranças (filtro atrasadas / a vencer, "Dar baixa", "Enviar no WhatsApp") e a rota de baixa; ajustar a navegação (3 áreas, `/` → `/cobrancas`, barra inferior com Sair). Pronto quando a baixa e o link do WhatsApp funcionam no navegador.
+- [x] 5.1 Criar a página Cobranças (filtro atrasadas / a vencer, "Dar baixa", "Enviar no WhatsApp") e a rota de baixa; ajustar a navegação (3 áreas, `/` → `/cobrancas`, barra inferior com Sair). Pronto quando a baixa e o link do WhatsApp funcionam no navegador.
 
 ## 6. Documentação e verificação
 
