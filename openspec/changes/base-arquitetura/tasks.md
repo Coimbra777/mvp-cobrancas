@@ -24,7 +24,7 @@
 - [x] 4.1 Criar `Botao` (variantes primária, secundária e marca; estado carregando com `aria-busy`/`aria-disabled`, bloqueando novo clique). Pronto quando os testes cobrem variantes, Enter/Espaço, o bloqueio no estado carregando e passam no `axe`.
 - [x] 4.2 Criar `Card`, `AvatarIniciais` (iniciais com nome completo acessível) e `SeloSituacao` (texto + ícone `aria-hidden` para paga, parcial, atrasada, vence hoje, vence em breve, a vencer e neutro). Pronto quando os testes confirmam o texto em pt-BR de cada variante e o ícone oculto de leitores de tela.
 - [x] 4.3 Criar `CampoTexto` e `CampoBusca` (rótulo visível associado, erro com `aria-invalid` e `aria-describedby`) e `AbasFiltro` (grupo de botões com `aria-pressed`, como as pílulas da imagem). Pronto quando os testes verificam a associação rótulo/erro, a seleção por teclado e passam no `axe`.
-- [ ] 4.4 Criar `TabelaResponsiva` (cabeçalhos `th scope="col"`; abaixo de 640 px vira cartões com rótulo de cada valor) e os estados `EstadoCarregando` (`aria-busy`), `EstadoVazio` e `EstadoErro` (botão "Tentar de novo", região `aria-live`). Pronto quando os testes cobrem a marcação semântica, a emissão do evento de nova tentativa e passam no `axe`.
+- [x] 4.4 Criar `TabelaResponsiva` (cabeçalhos `th scope="col"`; abaixo de 640 px vira cartões com rótulo de cada valor) e os estados `EstadoCarregando` (`aria-busy`), `EstadoVazio` e `EstadoErro` (botão "Tentar de novo", região `aria-live`). Pronto quando os testes cobrem a marcação semântica, a emissão do evento de nova tentativa e passam no `axe`.
 
 ## 5. Autenticação do usuário único
 
