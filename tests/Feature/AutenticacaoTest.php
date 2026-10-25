@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class AutenticacaoTest extends TestCase
@@ -27,6 +28,11 @@ class AutenticacaoTest extends TestCase
     private function entrar(array $dados = [])
     {
         return $this->post('/entrar', $dados + ['email' => 'dario@example.com', 'senha' => 'senha-forte-123']);
+    }
+
+    public function test_tela_de_entrada_renderiza_a_pagina_inertia(): void
+    {
+        $this->get('/entrar')->assertOk()->assertInertia(fn (Assert $page) => $page->component('auth/Entrar'));
     }
 
     public function test_credenciais_corretas_abrem_a_sessao_e_vao_para_o_painel(): void
