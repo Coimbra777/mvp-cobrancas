@@ -13,11 +13,8 @@ return new class extends Migration
             // id do evento no Asaas (evt_...). Chave de idempotência.
             $table->string('chave', 100)->unique();
             $table->string('evento', 60);
-            $table->string('asaas_payment_id', 100)->nullable()->index();
-            $table->string('pix_qrcode_id', 100)->nullable()->index();
             $table->json('payload');
             $table->string('resultado', 40)->nullable();
-            $table->text('erro')->nullable();
             $table->dateTime('processado_em')->nullable();
             $table->timestamps();
         });

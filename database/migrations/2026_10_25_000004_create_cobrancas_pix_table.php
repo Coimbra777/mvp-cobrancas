@@ -23,7 +23,6 @@ return new class extends Migration
             $table->dateTime('pago_em')->nullable();
             $table->unsignedBigInteger('valor_pago_centavos')->nullable();    // payment.value
             $table->unsignedBigInteger('valor_liquido_centavos')->nullable(); // payment.netValue
-            $table->bigInteger('diferenca_centavos')->nullable();             // pago - devido no dia
             $table->timestamps();
 
             $table->index(['parcela_id', 'status']);

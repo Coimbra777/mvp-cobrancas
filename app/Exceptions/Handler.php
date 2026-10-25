@@ -34,6 +34,8 @@ class Handler extends ExceptionHandler
         'current_password',
         'password',
         'password_confirmation',
+        'senha',
+        'senha_confirmation',
     ];
 
     /**
@@ -41,8 +43,6 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        //
     }
 }

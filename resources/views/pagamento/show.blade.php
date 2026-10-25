@@ -1,7 +1,6 @@
 @php
     $reais = fn (int $centavos) => 'R$ '.number_format($centavos / 100, 2, ',', '.');
     $paga = $parcela->status === \App\Enums\ParcelaStatus::Paga;
-    $cancelada = $parcela->status === \App\Enums\ParcelaStatus::Cancelada;
 @endphp
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -43,8 +42,6 @@
         <div class="valor">{{ $reais($valorCentavos) }}</div>
         @if ($paga)
             <span class="situacao ok">Paga</span>
-        @elseif ($cancelada)
-            <span class="situacao">Cancelada</span>
         @elseif ($diasAtraso > 0)
             <span class="situacao alerta">Em atraso há {{ $diasAtraso }} {{ $diasAtraso === 1 ? 'dia' : 'dias' }}</span>
         @else
@@ -56,9 +53,6 @@
             @if ($paga && $parcela->pago_em)
                 <dt>Pago em</dt><dd>{{ $parcela->pago_em->format('d/m/Y') }}</dd>
             @endif
-            @if (! $paga && $diasAtraso > 0)
-                <dt>Valor original</dt><dd>{{ $reais($parcela->valorEmAbertoCentavos()) }}</dd>
-            @endif
         </dl>
 
         @if ($cobranca && $qrCodeSvg)
@@ -68,9 +62,9 @@
             <button type="button" id="copiar">Copiar código Pix</button>
             <p class="suave">
                 Válido até {{ $cobranca->expira_em->format('d/m/Y') }} às {{ $cobranca->expira_em->format('H:i') }}.
-                @if ($diasAtraso > 0) Depois disso, abra este link de novo para ver o valor atualizado. @endif
+                @if ($diasAtraso > 0) Depois disso, abra este link de novo para gerar um novo código. @endif
             </p>
-        @elseif (! $paga && ! $cancelada)
+        @elseif (! $paga)
             <div class="aviso">
                 @if ($falhou)
                     Não conseguimos gerar o Pix agora. Tente de novo em alguns minutos.

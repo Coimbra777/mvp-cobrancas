@@ -13,8 +13,6 @@ return new class extends Migration
             $table->foreignId('emprestimo_id')->constrained('emprestimos');
             $table->unsignedSmallInteger('numero');
             $table->unsignedBigInteger('valor_centavos');
-            // Soma do que já entrou (Pix ou baixa manual). Permite pagamento parcial.
-            $table->unsignedBigInteger('valor_pago_centavos')->default(0);
             $table->date('vencimento');
             $table->string('status', 20)->default('aberta'); // App\Enums\ParcelaStatus
             $table->dateTime('pago_em')->nullable();

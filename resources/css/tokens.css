@@ -1,0 +1,116 @@
+/*
+ * Tokens da Caderneta, extraídos da imagem de referência.
+ * Tema claro em :root; o escuro segue o sistema operacional (prefers-color-scheme).
+ * Só as cores mudam entre temas. Pares de texto/fundo escolhidos para contraste AA.
+ */
+
+:root {
+    color-scheme: light dark;
+
+    /* Superfícies */
+    --cor-fundo: #f3f3ef;
+    --cor-superficie: #ffffff;
+    --cor-superficie-suave: #edf1ef;
+    --cor-borda: #e2e4df;
+    --cor-borda-controle: #8a918d;
+
+    /* Texto */
+    --cor-texto: #1b1f1d;
+    --cor-texto-suave: #5a625e;
+
+    /* Marca: amarelo só como fundo, sempre com texto escuro */
+    --cor-primaria: #ffc83d;
+    --cor-primaria-hover: #f5b91f;
+    --cor-sobre-primaria: #1b1f1d;
+    --cor-marca: #1d6b5f;
+    --cor-marca-hover: #175a50;
+    --cor-sobre-marca: #ffffff;
+    --cor-foco: #1d6b5f;
+
+    /* Situações (selos) */
+    --cor-sucesso-fundo: #ddf3e5;
+    --cor-sucesso-texto: #17603a;
+    --cor-atencao-fundo: #fff1cc;
+    --cor-atencao-texto: #6e4a00;
+    --cor-info-fundo: #e4eaf8;
+    --cor-info-texto: #2f4377;
+    --cor-perigo-fundo: #fce3e1;
+    --cor-perigo-texto: #9c2318;
+    --cor-neutro-fundo: #eceeec;
+    --cor-neutro-texto: #3f4642;
+
+    /* Tipografia */
+    --fonte-base: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --texto-xs: 0.75rem;   /* 12px: só auxiliares */
+    --texto-sm: 0.875rem;  /* 14px */
+    --texto-md: 1rem;      /* 16px: corpo */
+    --texto-lg: 1.125rem;  /* 18px */
+    --texto-xl: 1.25rem;   /* 20px */
+    --texto-2xl: 1.5rem;   /* 24px */
+    --texto-3xl: 1.875rem; /* 30px */
+    --peso-normal: 400;
+    --peso-medio: 500;
+    --peso-semi: 600;
+    --peso-forte: 700;
+    --altura-linha: 1.5;
+
+    /* Espaçamento (base 4px) */
+    --espaco-1: 0.25rem;
+    --espaco-2: 0.5rem;
+    --espaco-3: 0.75rem;
+    --espaco-4: 1rem;
+    --espaco-5: 1.25rem;
+    --espaco-6: 1.5rem;
+    --espaco-8: 2rem;
+    --espaco-10: 2.5rem;
+    --espaco-12: 3rem;
+
+    /* Raios e sombra */
+    --raio-sm: 6px;
+    --raio-md: 10px;
+    --raio-lg: 16px;
+    --raio-pilula: 999px;
+    --sombra-card: 0 1px 2px rgb(0 0 0 / 0.04);
+    --sombra-menu: 0 8px 24px rgb(0 0 0 / 0.12);
+
+    /* Layout */
+    --largura-sidebar: 248px;
+    --largura-conteudo: 1200px;
+    --altura-barra-inferior: 4rem;
+    --alvo-toque: 44px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --cor-fundo: #111513;
+        --cor-superficie: #1a1f1d;
+        --cor-superficie-suave: #232a27;
+        --cor-borda: #2c3431;
+        --cor-borda-controle: #7d8783;
+
+        --cor-texto: #ecefed;
+        --cor-texto-suave: #a9b2ae;
+
+        --cor-primaria: #ffc83d;
+        --cor-primaria-hover: #ffd466;
+        --cor-sobre-primaria: #1b1f1d;
+        --cor-marca: #5cc2ae;
+        --cor-marca-hover: #7dd0c0;
+        --cor-sobre-marca: #0e1a17;
+        --cor-foco: #5cc2ae;
+
+        --cor-sucesso-fundo: #163826;
+        --cor-sucesso-texto: #8ee0b0;
+        --cor-atencao-fundo: #3a2e0c;
+        --cor-atencao-texto: #ffd873;
+        --cor-info-fundo: #1f2a47;
+        --cor-info-texto: #afc2f5;
+        --cor-perigo-fundo: #45201c;
+        --cor-perigo-texto: #ffada5;
+        --cor-neutro-fundo: #2a302d;
+        --cor-neutro-texto: #cdd3d0;
+
+        --sombra-card: none;
+        --sombra-menu: 0 8px 24px rgb(0 0 0 / 0.5);
+    }
+}

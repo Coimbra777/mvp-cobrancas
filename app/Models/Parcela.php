@@ -17,7 +17,6 @@ class Parcela extends Model
         'emprestimo_id',
         'numero',
         'valor_centavos',
-        'valor_pago_centavos',
         'vencimento',
         'status',
         'pago_em',
@@ -28,11 +27,9 @@ class Parcela extends Model
         'pago_em' => 'datetime',
         'status' => ParcelaStatus::class,
         'valor_centavos' => 'integer',
-        'valor_pago_centavos' => 'integer',
     ];
 
     protected $attributes = [
-        'valor_pago_centavos' => 0,
         'status' => 'aberta',
     ];
 
@@ -63,6 +60,17 @@ class Parcela extends Model
         return $this->status === ParcelaStatus::Aberta;
     }
 
+    /** Situação exibida no painel: paga, atrasada, vence-hoje ou a-vencer. */
+    public function situacao(): string
+    {
+        return match (true) {
+            ! $this->estaAberta() => 'paga',
+            $this->vencimento->lt(today()) => 'atrasada',
+            $this->vencimento->isSameDay(today()) => 'vence-hoje',
+            default => 'a-vencer',
+        };
+    }
+
     public function diasAtraso(CarbonInterface $dia): int
     {
         $dia = $dia->copy()->startOfDay();
@@ -70,36 +78,37 @@ class Parcela extends Model
         return $dia->gt($this->vencimento) ? (int) $this->vencimento->diffInDays($dia) : 0;
     }
 
-    public function valorEmAbertoCentavos(): int
+    /**
+     * Marca a parcela como paga (baixa manual ou Pix). Sem pagamento parcial.
+     * Retorna false se ela já estava paga.
+     */
+    public function darBaixa(?CarbonInterface $em = null): bool
     {
-        return max(0, $this->valor_centavos - $this->valor_pago_centavos);
-    }
-
-    // Valor em aberto × (taxa mensal / 30) × dias de atraso, arredondado em centavos.
-    public function jurosCentavos(CarbonInterface $dia): int
-    {
-        $taxaDiaria = config('cobranca.taxa_juros_mensal') / 100 / 30;
-
-        return (int) round($this->valorEmAbertoCentavos() * $taxaDiaria * $this->diasAtraso($dia));
-    }
-
-    public function valorDevidoCentavos(CarbonInterface $dia): int
-    {
-        return $this->valorEmAbertoCentavos() + $this->jurosCentavos($dia);
-    }
-
-    // Usado pela baixa automática (Pix) e pela baixa manual (dinheiro, parcial).
-    public function registrarPagamento(int $centavos, CarbonInterface $em, bool $quitar = false): void
-    {
-        $devido = $this->valorDevidoCentavos($em);
-
-        $this->valor_pago_centavos += $centavos;
-
-        if ($quitar || $centavos >= $devido) {
-            $this->status = ParcelaStatus::Paga;
-            $this->pago_em = $em;
+        if (! $this->estaAberta()) {
+            return false;
         }
 
-        $this->save();
+        $this->update(['status' => ParcelaStatus::Paga, 'pago_em' => $em ?? now()]);
+
+        return true;
+    }
+
+    public function urlPagamento(): string
+    {
+        return route('pagamento.show', $this->token_pagamento);
+    }
+
+    /** Link wa.me com a mensagem de cobrança pronta (o Dario envia do próprio WhatsApp). */
+    public function linkWhatsApp(): string
+    {
+        $cliente = $this->emprestimo->cliente;
+        $valor = 'R$ '.number_format($this->valor_centavos / 100, 2, ',', '.');
+        $verbo = $this->vencimento->lt(today()) ? 'venceu' : 'vence';
+
+        $mensagem = "Olá, {$cliente->primeiroNome()}! Lembrete da parcela {$this->numero} de "
+            ."{$this->emprestimo->quantidade_parcelas}: {$valor}, {$verbo} em {$this->vencimento->format('d/m/Y')}. "
+            ."Para pagar por Pix, acesse: {$this->urlPagamento()}";
+
+        return "https://wa.me/55{$cliente->telefone}?text=".rawurlencode($mensagem);
     }
 }

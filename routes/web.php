@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CobrancaController;
+use App\Http\Controllers\EmprestimoController;
 use App\Http\Controllers\PagamentoController;
-use App\Http\Controllers\Site\SiteController;
 use App\Http\Controllers\WebhookAsaasController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,11 +19,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::redirect('/', '/cobrancas');
+
+// Acesso do único usuário (sem cadastro público nem recuperação de senha)
+Route::middleware('guest')->group(function () {
+    Route::get('/entrar', [LoginController::class, 'create'])->name('entrar');
+    Route::post('/entrar', [LoginController::class, 'store']);
 });
 
-Route::get('/contato', [SiteController::class, 'contato'])->name('site.contato');
+// Painel: tudo aqui dentro exige sessão. Rotas novas do painel entram neste grupo.
+Route::middleware('auth')->group(function () {
+    Route::post('/sair', [LoginController::class, 'destroy'])->name('sair');
+
+    Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
+    Route::post('/clientes', [ClienteController::class, 'store'])->name('clientes.store');
+
+    Route::get('/emprestimos', [EmprestimoController::class, 'index'])->name('emprestimos.index');
+    Route::get('/emprestimos/novo', [EmprestimoController::class, 'create'])->name('emprestimos.create');
+    Route::post('/emprestimos', [EmprestimoController::class, 'store'])->name('emprestimos.store');
+    Route::get('/emprestimos/{emprestimo}', [EmprestimoController::class, 'show'])->whereNumber('emprestimo')->name('emprestimos.show');
+
+    Route::get('/cobrancas', [CobrancaController::class, 'index'])->name('cobrancas.index');
+    Route::post('/parcelas/{parcela}/baixa', [CobrancaController::class, 'baixa'])->name('parcelas.baixa');
+});
 
 // Página pública de pagamento da parcela (token aleatório, nunca o id)
 Route::get('/p/{token}', [PagamentoController::class, 'show'])

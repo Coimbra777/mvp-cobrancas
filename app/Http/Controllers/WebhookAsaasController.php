@@ -31,12 +31,7 @@ class WebhookAsaasController extends Controller
         try {
             $evento = EventoWebhook::firstOrCreate(
                 ['chave' => $dados['id'] ?? 'sha1:'.sha1($request->getContent())],
-                [
-                    'evento' => $dados['event'],
-                    'asaas_payment_id' => $dados['payment']['id'] ?? null,
-                    'pix_qrcode_id' => $dados['payment']['pixQrCodeId'] ?? null,
-                    'payload' => $dados,
-                ],
+                ['evento' => $dados['event'], 'payload' => $dados],
             );
         } catch (UniqueConstraintViolationException) {
             return response()->json(['duplicado' => true]);
@@ -49,9 +44,10 @@ class WebhookAsaasController extends Controller
         try {
             $service->processar($evento);
         } catch (Throwable $e) {
-            // O evento já está salvo; `webhook:reprocessar` tenta de novo. Responde 200 para não pausar a fila do Asaas.
-            $evento->update(['erro' => $e->getMessage()]);
+            // O evento fica salvo como não processado; o Asaas reenvia e o reenvio o processa.
             Log::error('Erro ao processar webhook Asaas', ['evento_id' => $evento->id, 'erro' => $e->getMessage()]);
+
+            return response()->json(['erro' => 'falha ao processar'], 500);
         }
 
         return response()->json(['recebido' => true]);

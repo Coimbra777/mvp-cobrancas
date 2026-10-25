@@ -18,6 +18,13 @@ return [
     'default' => env('CACHE_DRIVER', 'file'),
 
     /*
+    | Classes que podem ser desserializadas do cache. `false` bloqueia objetos
+    | (proteção do Laravel 13 contra gadget chains caso a APP_KEY vaze).
+    */
+
+    'serializable_classes' => false,
+
+    /*
     |--------------------------------------------------------------------------
     | Cache Stores
     |--------------------------------------------------------------------------

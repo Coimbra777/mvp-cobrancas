@@ -12,28 +12,33 @@ use Throwable;
 
 class CobrancaPixService
 {
-    public function __construct(
-        private AsaasClient $asaas,
-        private BaixaPixService $baixa,
-    ) {}
+    // O QR Code da parcela em dia é criado a partir de 5 dias antes do vencimento.
+    public const DIAS_ANTECEDENCIA = 5;
+
+    public function __construct(private AsaasClient $asaas)
+    {
+    }
 
     public static function referencia(CobrancaPix $cobranca): string
     {
         return "cobranca_pix:{$cobranca->id}";
     }
 
+    public static function disponivelEm(Parcela $parcela): CarbonInterface
+    {
+        return $parcela->vencimento->copy()->subDays(self::DIAS_ANTECEDENCIA);
+    }
+
     public function dentroDaJanela(Parcela $parcela, CarbonInterface $agora): bool
     {
-        $limite = $agora->copy()->startOfDay()->addDays(config('cobranca.dias_antecedencia'));
-
-        return $parcela->vencimento->lte($limite);
+        return $parcela->vencimento->lte($agora->copy()->startOfDay()->addDays(self::DIAS_ANTECEDENCIA));
     }
 
     /**
-     * Devolve um QR Code válido para o valor devido hoje, criando um novo se preciso.
-     * Em dia: expira no fim do dia do vencimento. Em atraso: o valor muda por dia,
-     * então o QR Code vale só até o fim de hoje.
-     * Retorna null se a parcela não está aberta ou ainda está fora da janela de cobrança.
+     * Devolve um QR Code vigente para a parcela, criando um novo se preciso.
+     * Em dia: expira no fim do dia do vencimento. Atrasada: vale até o fim de hoje
+     * (o do dia anterior é substituído), sempre com o valor original da parcela.
+     * Retorna null se a parcela está paga ou fora da janela de cobrança.
      */
     public function garantirQrCodeVigente(Parcela $parcela, ?CarbonInterface $agora = null): ?CobrancaPix
     {
@@ -48,22 +53,13 @@ class CobrancaPixService
             ->block(20, fn () => $this->criarSeNecessario($parcela->fresh('emprestimo'), $agora));
     }
 
-    private function criarSeNecessario(Parcela $parcela, CarbonInterface $agora): ?CobrancaPix
+    private function criarSeNecessario(Parcela $parcela, CarbonInterface $agora): CobrancaPix
     {
-        $valor = $parcela->valorDevidoCentavos($agora);
-
         $ativas = $parcela->cobrancasPix()->where('status', CobrancaPixStatus::Ativa)->latest('id')->get();
 
-        $vigente = $ativas->first(fn (CobrancaPix $c) => $c->valor_centavos === $valor && $c->estaVigente($agora));
+        $vigente = $ativas->first(fn (CobrancaPix $c) => $c->estaVigente($agora));
         if ($vigente) {
             return $vigente;
-        }
-
-        // Antes de trocar, confere se algum QR Code anterior já foi pago e o webhook se perdeu.
-        foreach ($ativas as $anterior) {
-            if ($this->conciliar($anterior)) {
-                return null;
-            }
         }
 
         // Intenção que ficou sem resposta do Asaas (processo caiu no meio): o payload nunca foi exibido.
@@ -77,12 +73,12 @@ class CobrancaPixService
         // 1) grava a intenção, 2) chama o Asaas fora de transação, 3) grava o retorno.
         $cobranca = $parcela->cobrancasPix()->create([
             'status' => CobrancaPixStatus::Pendente,
-            'valor_centavos' => $valor,
+            'valor_centavos' => $parcela->valor_centavos,
             'expira_em' => $expiraEm,
         ]);
 
         try {
-            $qrCode = $this->asaas->criarQrCodeEstatico($valor, $parcela->descricao(), $expiraEm, self::referencia($cobranca));
+            $qrCode = $this->asaas->criarQrCodeEstatico($parcela->valor_centavos, $parcela->descricao(), $expiraEm, self::referencia($cobranca));
         } catch (Throwable $e) {
             $cobranca->update(['status' => CobrancaPixStatus::Falhou, 'erro' => $e->getMessage()]);
 
@@ -100,29 +96,6 @@ class CobrancaPixService
         }
 
         return $cobranca;
-    }
-
-    /**
-     * Se o QR Code já tem pagamento no Asaas, dá a baixa. Retorna true se baixou.
-     */
-    private function conciliar(CobrancaPix $cobranca): bool
-    {
-        if (! $cobranca->asaas_qrcode_id) {
-            return false;
-        }
-
-        $pagamentos = collect($this->asaas->consultarCobrancasPorQrCode($cobranca->asaas_qrcode_id))
-            ->whereIn('status', ['CONFIRMED', 'RECEIVED']);
-
-        foreach ($pagamentos as $pagamento) {
-            Log::warning('Pix pago sem webhook processado; baixa feita pela conciliação', [
-                'cobranca_pix_id' => $cobranca->id,
-                'asaas_payment_id' => $pagamento['id'],
-            ]);
-            $this->baixa->executar($cobranca, $pagamento);
-        }
-
-        return $pagamentos->isNotEmpty();
     }
 
     private function substituir(CobrancaPix $cobranca): void
