@@ -1,7 +1,7 @@
 # sistema-visual Specification
 
 ## Purpose
-Estabelece a linguagem visual da Caderneta, derivada da imagem de referência: tokens, tema claro/escuro, componentes base e estados de interface, todos atendendo WCAG 2.2 AA.
+Estabelece a linguagem visual da Caderneta, derivada da imagem de referência: tokens, tema automático claro/escuro, componentes base e estado vazio, com acessibilidade WCAG 2.2 AA.
 
 ## Requirements
 
@@ -18,17 +18,6 @@ Em ambos os temas, texto normal SHALL ter contraste de pelo menos 4,5:1 com o fu
 #### Scenario: Pares de tokens verificados
 - **WHEN** a verificação automática calcula o contraste de cada par texto/fundo definido nos tokens
 - **THEN** todos os pares de texto normal ficam em 4,5:1 ou mais e os de componentes em 3:1 ou mais, nos dois temas
-
-### Requirement: Tema claro e escuro
-O painel SHALL seguir a preferência de tema do sistema operacional por padrão e SHALL oferecer uma troca manual (Claro, Escuro, Automático) que fica salva no navegador. A página MUST NOT piscar no tema errado ao carregar.
-
-#### Scenario: Preferência do sistema
-- **WHEN** o sistema operacional está em modo escuro e não há escolha salva
-- **THEN** o painel abre no tema escuro
-
-#### Scenario: Escolha manual persiste
-- **WHEN** o usuário escolhe "Claro" e recarrega a página
-- **THEN** o painel abre no tema claro desde o primeiro quadro, mesmo com o sistema em modo escuro
 
 ### Requirement: Foco visível
 Todo elemento interativo SHALL mostrar um indicador de foco visível ao receber foco por teclado, com contraste de pelo menos 3:1, e o elemento focado MUST NOT ficar totalmente encoberto por barras fixas.
@@ -58,17 +47,6 @@ Todo campo SHALL ter rótulo visível associado. Mensagens de erro SHALL aparece
 - **WHEN** o envio de um formulário volta com erro no campo "E-mail"
 - **THEN** o campo tem `aria-invalid="true"`, a mensagem aparece abaixo dele, está ligada por `aria-describedby` e o foco vai para o primeiro campo com erro
 
-### Requirement: Estados de carregando, vazio e erro
-Listas e cards SHALL ter estados de carregando, vazio e erro no mesmo estilo visual. O estado de erro SHALL oferecer uma ação de tentar de novo. Mudanças de estado SHALL ser anunciadas sem mover o foco.
-
-#### Scenario: Lista vazia
-- **WHEN** uma lista não tem itens
-- **THEN** aparece um estado vazio com ícone, título e texto explicativo, em vez de uma área em branco
-
-#### Scenario: Erro com nova tentativa
-- **WHEN** o carregamento de uma lista falha
-- **THEN** aparece a mensagem de erro com o botão "Tentar de novo", anunciada por uma região `aria-live`
-
 ### Requirement: Tabela responsiva
 Tabelas SHALL usar cabeçalhos de coluna semânticos e, em telas menores que 640 px, SHALL se reorganizar em cartões que mantêm o rótulo de cada valor, sem rolagem horizontal da página.
 
@@ -86,3 +64,17 @@ O painel SHALL funcionar a partir de 320 px de largura sem rolagem horizontal, S
 #### Scenario: Movimento reduzido
 - **WHEN** o sistema operacional pede movimento reduzido
 - **THEN** transições e animações são desativadas ou reduzidas a troca instantânea
+
+### Requirement: Tema automático
+O painel SHALL seguir automaticamente o tema claro ou escuro do sistema operacional, sem troca manual e sem piscar no tema errado ao carregar.
+
+#### Scenario: Sistema em modo escuro
+- **WHEN** o sistema operacional está em modo escuro
+- **THEN** o painel abre no tema escuro desde o primeiro quadro
+
+### Requirement: Estado vazio
+Listas sem itens SHALL mostrar um estado vazio com ícone, título e texto explicativo em vez de uma área em branco.
+
+#### Scenario: Lista vazia
+- **WHEN** uma lista não tem itens
+- **THEN** aparece um estado vazio com ícone, título e texto explicativo

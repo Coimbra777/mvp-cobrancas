@@ -6,11 +6,11 @@ Garante que só o Dario, único usuário da Caderneta, acesse o painel, por meio
 ## Requirements
 
 ### Requirement: Entrar com e-mail e senha
-O sistema SHALL autenticar o usuário por e-mail e senha em uma tela de entrada em pt-BR e, em caso de sucesso, abrir uma sessão e levá-lo ao Painel ou à página protegida que ele tentou abrir.
+O sistema SHALL autenticar o usuário por e-mail e senha em uma tela de entrada em pt-BR e, em caso de sucesso, abrir uma sessão e levá-lo às Cobranças ou à página protegida que ele tentou abrir.
 
 #### Scenario: Credenciais corretas
 - **WHEN** o usuário informa e-mail e senha corretos em `/entrar`
-- **THEN** o sistema abre a sessão, renova o identificador de sessão e redireciona para `/painel`
+- **THEN** o sistema abre a sessão, renova o identificador de sessão e redireciona para `/cobrancas`
 
 #### Scenario: Volta para a página pedida
 - **WHEN** um visitante sem sessão abre `/clientes`, é levado a `/entrar` e entra com sucesso
@@ -61,12 +61,12 @@ O sistema SHALL encerrar a sessão quando o usuário escolher "Sair", invalidand
 O sistema SHALL exigir sessão autenticada em todas as páginas do painel e SHALL redirecionar visitantes sem sessão para `/entrar`.
 
 #### Scenario: Visitante abre o painel
-- **WHEN** um visitante sem sessão abre `/painel`
+- **WHEN** um visitante sem sessão abre `/cobrancas`
 - **THEN** o sistema redireciona para `/entrar`
 
 #### Scenario: Usuário autenticado abre a tela de entrada
 - **WHEN** um usuário já autenticado abre `/entrar`
-- **THEN** o sistema redireciona para `/painel`
+- **THEN** o sistema redireciona para `/cobrancas`
 
 ### Requirement: Usuário único criado por comando
 O sistema SHALL permitir criar ou redefinir o único usuário apenas por um comando de terminal que recebe nome e e-mail e pede a senha sem exibi-la, exigindo no mínimo 10 caracteres. Rodar de novo SHALL atualizar o mesmo usuário, nunca criar um segundo.
