@@ -45,6 +45,7 @@ Restrições: produção numa hospedagem compartilhada sem Node; um único usuá
   - A favor: estrutura enxuta e moderna.
   - Contra: diff gigante e perda da relação com o commit inicial. Rejeitada; pode virar uma change própria no futuro, se fizer falta.
 - **Plano B (se não aprovar):** ficar no Laravel 10 e usar `inertiajs/inertia-laravel` 2.x. As outras decisões não mudam.
+- **Ajuste durante o apply (aprovado o upgrade):** o Composer recusa instalar qualquer Laravel 11.x, por avisos de segurança (versão fora de suporte). Instalar as versões intermediárias exigiria desligar essa proteção, então o salto passou a ser direto 10 → 13 num único `composer update`. Antes do salto, as mudanças dos guias 11, 12 e 13 que afetam este projeto são aplicadas no código. Os testes da Fase 2 são a rede de segurança, e `composer audit` limpo é critério de pronto.
 
 ### D2. Inertia 3 + Vue 3 instalados à mão, com o Breeze só como referência
 

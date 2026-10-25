@@ -3,9 +3,9 @@
 ## 1. Atualização do Laravel para 13 / PHP 8.3 (só após aprovação; se recusada, aplicar o plano B do design D1)
 
 - [x] 1.1 Atualizar o Docker para `php:8.3-fpm` e `mysql:8.4`, remover o serviço redis sem uso e fixar `config.platform.php = 8.3.0` no `composer.json`. Pronto quando `docker-compose exec app php -v` mostra 8.3 e os 24 testes da Fase 2 passam.
-- [ ] 1.2 Subir para Laravel 11 seguindo o guia oficial, mantendo a estrutura atual de pastas. Pronto quando `composer update` conclui sem conflito, `php artisan about` mostra 11.x e os 24 testes passam (commit próprio).
-- [ ] 1.3 Subir para Laravel 12 seguindo o guia oficial. Pronto quando `php artisan about` mostra 12.x e os 24 testes passam (commit próprio).
-- [ ] 1.4 Subir para Laravel 13 seguindo o guia oficial. Pronto quando `php artisan about` mostra 13.x e os 24 testes passam (commit próprio).
+- [x] 1.2 Aplicar no código as mudanças dos guias 10→11, 11→12 e 12→13 que afetam este projeto (dependências, Carbon 3, CSRF `PreventRequestForgery`, `serializable_classes`/`serialization`, PHPUnit 12), mantendo a estrutura atual de pastas. O salto é direto, porque o Composer bloqueia o Laravel 11 por avisos de segurança (ver D1). Pronto quando a lista do que se aplicou está na mensagem do commit.
+- [x] 1.3 Subir direto para Laravel 13 em um único `composer update`. Pronto quando `php artisan about` mostra 13.x e os 24 testes da Fase 2 passam.
+- [x] 1.4 Conferir segurança e avisos após o salto. Pronto quando `composer audit` não aponta avisos e a suíte roda sem deprecações do PHPUnit.
 - [ ] 1.5 Remover `laravel/sanctum`, `routes/api.php` e o carregamento das rotas de API no `RouteServiceProvider`. Pronto quando um teste confirma que `GET /api/user` responde 404 e a suíte toda passa.
 
 ## 2. Inertia + Vue 3 + TypeScript
