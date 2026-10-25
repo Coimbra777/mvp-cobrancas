@@ -258,8 +258,9 @@ onBeforeUnmount(() => {
 
 .inferior__lista {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    height: var(--altura-barra-inferior);
+    /* minmax(0, 1fr): colunas podem encolher; com texto ampliado os rótulos quebram em vez de vazar */
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-height: var(--altura-barra-inferior);
 }
 
 .inferior__item {
@@ -271,13 +272,22 @@ onBeforeUnmount(() => {
     width: 100%;
     height: 100%;
     min-height: var(--alvo-toque);
+    padding: var(--espaco-1) 2px;
     border: 0;
     background: transparent;
     color: var(--cor-texto-suave);
     font-size: var(--texto-xs);
     font-weight: var(--peso-medio);
+    line-height: 1.15;
+    text-align: center;
     text-decoration: none;
+    overflow-wrap: anywhere;
+    hyphens: auto;
     cursor: pointer;
+}
+
+.inferior__item svg {
+    flex: none;
 }
 
 .inferior__item[aria-current='page'],

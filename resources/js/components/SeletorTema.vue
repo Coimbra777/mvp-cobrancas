@@ -38,19 +38,28 @@ const opcoes: Array<{ valor: PreferenciaTema; rotulo: string; icone: typeof Sun 
 }
 
 .tema__opcao {
-    flex: 1;
+    /* Largura pelo conteúdo: "Automático" ocupa mais que "Claro" sem quebrar a palavra */
+    flex: 1 1 auto;
+    min-width: 0;
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--espaco-1);
+    gap: 2px;
     min-height: var(--alvo-toque);
-    padding: 0 var(--espaco-2);
+    padding: var(--espaco-1);
     background: transparent;
     border: 1px solid transparent;
     border-radius: var(--raio-sm);
     font-size: var(--texto-xs);
     font-weight: var(--peso-medio);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
     cursor: pointer;
+}
+
+.tema__opcao svg {
+    flex: none;
 }
 
 .tema__opcao[aria-pressed='true'] {
