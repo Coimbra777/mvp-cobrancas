@@ -203,6 +203,9 @@ return [
                 'secret',
                 'client_secret',
                 'api_key',
+                // Campos em português da Caderneta
+                'senha',
+                'senha_confirmation',
             ],
 
             'headers' => [

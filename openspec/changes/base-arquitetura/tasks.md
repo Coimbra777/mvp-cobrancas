@@ -44,7 +44,7 @@
 
 ## 8. Rotas públicas preservadas
 
-- [ ] 8.1 Adicionar testes da spec `rotas-publicas`: webhook sem cookies nem CSRF responde 200/401 em JSON (sem 419 nem redirecionamento), `/p/{token}` abre sem sessão com `X-Robots-Tag` mesmo sem `public/build`, e uma rota do grupo do painel sem sessão vai para `/entrar`. Pronto quando esses testes e os 24 da Fase 2 passam.
+- [x] 8.1 Adicionar testes da spec `rotas-publicas`: webhook sem cookies nem CSRF responde 200/401 em JSON (sem 419 nem redirecionamento), `/p/{token}` abre sem sessão com `X-Robots-Tag` mesmo sem `public/build`, e uma rota do grupo do painel sem sessão vai para `/entrar`. Pronto quando esses testes e os 24 da Fase 2 passam.
 
 ## 9. Documentação
 
