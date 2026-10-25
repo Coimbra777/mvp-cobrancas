@@ -55,6 +55,13 @@ a {
     outline: none;
 }
 
+/* Celular: rolagem até um elemento focado não o deixa atrás da barra inferior fixa (WCAG 2.4.11). */
+@media (max-width: 1023.98px) {
+    html {
+        scroll-padding-bottom: calc(var(--altura-barra-inferior) + 1rem);
+    }
+}
+
 /* Visível só para leitores de tela. */
 .sr-only {
     position: absolute;
