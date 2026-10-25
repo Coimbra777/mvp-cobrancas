@@ -48,7 +48,7 @@
 
 ## 9. Documentação
 
-- [ ] 9.1 Reescrever o `README.md`: requisitos (PHP 8.3, Composer, Node 22 só local, Docker), setup local, variáveis de ambiente (sem valores reais), criação do usuário, testes (`php artisan test`, `npm test`), compilação dos assets, publicação na Hostinger (build e `vendor` locais, envio sem git dos compilados, apontar o domínio para `public/`, comandos pós-deploy, linha única do cron) e a seção da Fase 2 (Asaas sandbox, túnel, webhook) atualizada. Pronto quando os comandos de setup do README, seguidos num clone limpo, sobem o projeto e o login funciona.
+- [x] 9.1 Reescrever o `README.md`: requisitos (PHP 8.3, Composer, Node 22 só local, Docker), setup local, variáveis de ambiente (sem valores reais), criação do usuário, testes (`php artisan test`, `npm test`), compilação dos assets, publicação na Hostinger (build e `vendor` locais, envio sem git dos compilados, apontar o domínio para `public/`, comandos pós-deploy, linha única do cron) e a seção da Fase 2 (Asaas sandbox, túnel, webhook) atualizada. Pronto quando os comandos de setup do README, seguidos num clone limpo, sobem o projeto e o login funciona.
 
 ## 10. Verificação integrada
 

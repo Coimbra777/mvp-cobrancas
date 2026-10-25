@@ -39,7 +39,7 @@ cp .env.example .env                         # valores locais; o .env nunca vai 
 docker compose up -d --build                 # app (PHP 8.3), nginx em :8989 e MySQL 8.4 em :3388
 docker compose exec app composer install
 docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan migrate --seed   # na 1ª vez o MySQL leva ~20s para aceitar conexões; se falhar, repita
 
 npm ci
 npm run build                                # gera public/build (ou use npm run dev, seção 4)
