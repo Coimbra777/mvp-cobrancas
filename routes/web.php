@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PagamentoController;
-use App\Http\Controllers\Site\SiteController;
 use App\Http\Controllers\WebhookAsaasController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,11 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/contato', [SiteController::class, 'contato'])->name('site.contato');
+Route::redirect('/', '/painel');
 
 // Acesso do único usuário (sem cadastro público nem recuperação de senha)
 Route::middleware('guest')->group(function () {
@@ -29,7 +24,18 @@ Route::middleware('guest')->group(function () {
     Route::post('/entrar', [LoginController::class, 'store']);
 });
 
-Route::post('/sair', [LoginController::class, 'destroy'])->middleware('auth')->name('sair');
+// Painel: tudo aqui dentro exige sessão. Rotas novas do painel entram neste grupo.
+Route::middleware('auth')->group(function () {
+    Route::post('/sair', [LoginController::class, 'destroy'])->name('sair');
+
+    // Áreas ainda provisórias; cada change troca a sua pela página real.
+    Route::inertia('/painel', 'EmConstrucao', ['titulo' => 'Painel'])->name('painel');
+    Route::inertia('/clientes', 'EmConstrucao', ['titulo' => 'Clientes'])->name('clientes');
+    Route::inertia('/emprestimos', 'EmConstrucao', ['titulo' => 'Empréstimos'])->name('emprestimos');
+    Route::inertia('/parcelas', 'EmConstrucao', ['titulo' => 'Parcelas'])->name('parcelas');
+    Route::inertia('/lembretes', 'EmConstrucao', ['titulo' => 'Lembretes'])->name('lembretes');
+    Route::inertia('/configuracoes', 'EmConstrucao', ['titulo' => 'Configurações'])->name('configuracoes');
+});
 
 // Página pública de pagamento da parcela (token aleatório, nunca o id)
 Route::get('/p/{token}', [PagamentoController::class, 'show'])
