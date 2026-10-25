@@ -34,9 +34,9 @@ class PagamentoController extends Controller
             ->view('pagamento.show', [
                 'parcela' => $parcela,
                 'primeiroNome' => $parcela->emprestimo->cliente->primeiroNome(),
-                'valorCentavos' => $parcela->estaAberta() ? $parcela->valorDevidoCentavos($agora) : $parcela->valor_pago_centavos,
+                'valorCentavos' => $parcela->valor_centavos,
                 'diasAtraso' => $parcela->diasAtraso($agora),
-                'disponivelEm' => $parcela->vencimento->copy()->subDays(config('cobranca.dias_antecedencia')),
+                'disponivelEm' => CobrancaPixService::disponivelEm($parcela),
                 'cobranca' => $parcela->estaAberta() ? $cobranca : null,
                 'qrCodeSvg' => $cobranca?->payload ? $this->qrCodeSvg($cobranca->payload) : null,
                 'falhou' => $falhou,

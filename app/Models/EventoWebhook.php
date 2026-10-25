@@ -11,11 +11,8 @@ class EventoWebhook extends Model
     protected $fillable = [
         'chave',
         'evento',
-        'asaas_payment_id',
-        'pix_qrcode_id',
         'payload',
         'resultado',
-        'erro',
         'processado_em',
     ];
 

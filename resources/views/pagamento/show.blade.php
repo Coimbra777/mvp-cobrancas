@@ -56,9 +56,6 @@
             @if ($paga && $parcela->pago_em)
                 <dt>Pago em</dt><dd>{{ $parcela->pago_em->format('d/m/Y') }}</dd>
             @endif
-            @if (! $paga && $diasAtraso > 0)
-                <dt>Valor original</dt><dd>{{ $reais($parcela->valorEmAbertoCentavos()) }}</dd>
-            @endif
         </dl>
 
         @if ($cobranca && $qrCodeSvg)
@@ -68,7 +65,7 @@
             <button type="button" id="copiar">Copiar código Pix</button>
             <p class="suave">
                 Válido até {{ $cobranca->expira_em->format('d/m/Y') }} às {{ $cobranca->expira_em->format('H:i') }}.
-                @if ($diasAtraso > 0) Depois disso, abra este link de novo para ver o valor atualizado. @endif
+                @if ($diasAtraso > 0) Depois disso, abra este link de novo para gerar um novo código. @endif
             </p>
         @elseif (! $paga && ! $cancelada)
             <div class="aviso">

@@ -23,7 +23,7 @@ class GerarCobrancas extends Command
         // Parcelas já vencidas têm QR Code gerado sob demanda na página /p/{token}.
         $parcelas = Parcela::with('emprestimo')
             ->where('status', ParcelaStatus::Aberta)
-            ->whereBetween('vencimento', [$hoje, $hoje->copy()->addDays(config('cobranca.dias_antecedencia'))])
+            ->whereBetween('vencimento', [$hoje, $hoje->copy()->addDays(CobrancaPixService::DIAS_ANTECEDENCIA)])
             ->orderBy('vencimento')
             ->get();
 
@@ -33,9 +33,7 @@ class GerarCobrancas extends Command
             try {
                 $cobranca = $service->garantirQrCodeVigente($parcela);
 
-                if (! $cobranca) {
-                    $this->line("Parcela {$parcela->id}: já paga (conciliação)");
-                } elseif ($cobranca->wasRecentlyCreated) {
+                if ($cobranca?->wasRecentlyCreated) {
                     $criadas++;
                     $this->info("Parcela {$parcela->id}: QR Code criado ({$cobranca->asaas_qrcode_id})");
                 } else {

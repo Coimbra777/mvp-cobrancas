@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('telefone', 20)->nullable();
+            $table->string('telefone', 11); // só dígitos: DDD + número
             $table->timestamps();
         });
     }

@@ -6,14 +6,20 @@ use App\Enums\CobrancaPixStatus;
 use App\Models\Cliente;
 use App\Models\CobrancaPix;
 use App\Models\Parcela;
-use Illuminate\Support\Facades\Http;
 
 trait CriaParcelas
 {
     protected function criarParcela(array $atributos = []): Parcela
     {
         $emprestimo = Cliente::create(['nome' => 'Maria da Silva', 'telefone' => '85999990000'])
-            ->emprestimos()->create(['valor_centavos' => 1000000, 'quantidade_parcelas' => 10]);
+            ->emprestimos()->create([
+                'valor_centavos' => 1000000,
+                'taxa_mensal' => 5,
+                'metodo' => 'simples',
+                'quantidade_parcelas' => 10,
+                'primeiro_vencimento' => today(),
+                'total_centavos' => 1500000,
+            ]);
 
         return $emprestimo->parcelas()->create($atributos + [
             'numero' => 3,
@@ -30,17 +36,6 @@ trait CriaParcelas
             'expira_em' => $parcela->vencimento->copy()->endOfDay(),
             'asaas_qrcode_id' => $qrCodeId,
             'payload' => "00020126PAYLOAD{$qrCodeId}",
-        ]);
-    }
-
-    protected function fakeAsaas(array $qrCodeIds = ['qr_1', 'qr_2', 'qr_3']): void
-    {
-        $respostas = array_map(fn ($id) => ['id' => $id, 'payload' => "00020126PAYLOAD{$id}", 'allowsMultiplePayments' => false], $qrCodeIds);
-
-        Http::fake([
-            '*/pix/qrCodes/static/*' => Http::response(['deleted' => true]),
-            '*/pix/qrCodes/static' => Http::sequence($respostas),
-            '*/payments?*' => Http::response(['data' => []]),
         ]);
     }
 }

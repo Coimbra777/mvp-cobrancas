@@ -12,34 +12,15 @@ use RuntimeException;
 
 class AsaasClient
 {
-    private ?string $chavePix = null;
-
-    /**
-     * Retorna a chave Pix que recebe os pagamentos: a do .env ou, se vazia,
-     * a primeira chave ativa da conta. No sandbox, cria uma chave aleatória (EVP) se não houver nenhuma.
-     */
-    public function garantirChavePix(): string
+    private function chavePix(): string
     {
-        if ($this->chavePix) {
-            return $this->chavePix;
+        $chave = (string) config('services.asaas.pix_key');
+
+        if ($chave === '') {
+            throw new RuntimeException('ASAAS_PIX_KEY não configurada (chave Pix da conta que recebe).');
         }
 
-        if ($chave = config('services.asaas.pix_key')) {
-            return $this->chavePix = $chave;
-        }
-
-        $ativas = $this->get('/pix/addressKeys', ['status' => 'ACTIVE'])->json('data', []);
-
-        if ($ativas) {
-            return $this->chavePix = $ativas[0]['key'];
-        }
-
-        $nova = $this->post('/pix/addressKeys', ['type' => 'EVP'])->json();
-        Log::warning('Asaas: nenhuma chave Pix ativa; chave EVP criada. Defina ASAAS_PIX_KEY no .env.', [
-            'status' => $nova['status'] ?? null,
-        ]);
-
-        return $this->chavePix = $nova['key'];
+        return $chave;
     }
 
     /**
@@ -51,7 +32,7 @@ class AsaasClient
     public function criarQrCodeEstatico(int $valorCentavos, string $descricao, CarbonInterface $expiraEm, string $externalReference): array
     {
         return $this->post('/pix/qrCodes/static', [
-            'addressKey' => $this->garantirChavePix(),
+            'addressKey' => $this->chavePix(),
             'value' => round($valorCentavos / 100, 2),
             'description' => $descricao,
             'expirationDate' => $expiraEm->format('Y-m-d H:i:s'),
@@ -63,14 +44,6 @@ class AsaasClient
     public function removerQrCodeEstatico(string $qrCodeId): bool
     {
         return (bool) $this->send('delete', "/pix/qrCodes/static/{$qrCodeId}")->json('deleted');
-    }
-
-    /**
-     * Cobranças que o Asaas criou a partir de pagamentos do QR Code estático.
-     */
-    public function consultarCobrancasPorQrCode(string $qrCodeId): array
-    {
-        return $this->get('/payments', ['pixQrCodeId' => $qrCodeId])->json('data', []);
     }
 
     public function consultarCobranca(string $paymentId): array
