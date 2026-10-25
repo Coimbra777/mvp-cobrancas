@@ -1,0 +1,80 @@
+/* Base global: reset leve, tipografia, foco visível e movimento reduzido. */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--fonte-base);
+    font-size: var(--texto-md);
+    line-height: var(--altura-linha);
+    color: var(--cor-texto);
+    background: var(--cor-fundo);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, p {
+    margin: 0;
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.25;
+}
+
+img, svg {
+    display: block;
+    max-width: 100%;
+}
+
+button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+/* Foco visível em tudo que é interativo (WCAG 2.4.7 / 2.4.13). */
+:focus-visible {
+    outline: 3px solid var(--cor-foco);
+    outline-offset: 2px;
+}
+
+/* Títulos recebem foco por programa ao trocar de página; sem contorno para clique. */
+[tabindex='-1']:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Visível só para leitores de tela. */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

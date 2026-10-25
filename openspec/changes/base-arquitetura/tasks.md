@@ -16,7 +16,7 @@
 
 ## 3. Tokens, tipografia e tema
 
-- [ ] 3.1 Criar `resources/css/tokens.css` com os tokens do design D5 (claro em `:root`, escuro em `[data-theme="dark"]`) e `resources/css/base.css` (reset leve, Inter, foco visível com `--cor-foco`, `prefers-reduced-motion`, `color-scheme`). Pronto quando o teste de contraste, que lê o `tokens.css`, passa nos dois temas e falha ao trocar `--cor-texto-suave` por um cinza abaixo de 4,5:1.
+- [x] 3.1 Criar `resources/css/tokens.css` com os tokens do design D5 (claro em `:root`, escuro em `[data-theme="dark"]`) e `resources/css/base.css` (reset leve, Inter, foco visível com `--cor-foco`, `prefers-reduced-motion`, `color-scheme`). Pronto quando o teste de contraste, que lê o `tokens.css`, passa nos dois temas e falha ao trocar `--cor-texto-suave` por um cinza abaixo de 4,5:1.
 - [ ] 3.2 Adicionar o script inline de tema no `<head>` do `app.blade.php` e o composable `useTema()` (Claro, Escuro, Automático, salvo em `localStorage`, com `try/catch`). Pronto quando os testes Vitest cobrem: preferência do sistema sem escolha salva, escolha manual persistida, reação à mudança do sistema em modo Automático e `localStorage` indisponível sem erro; e um teste PHP confirma que o script vem antes do CSS no HTML.
 
 ## 4. Componentes base
