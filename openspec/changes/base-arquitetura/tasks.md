@@ -40,7 +40,7 @@
 
 ## 7. Páginas de erro
 
-- [ ] 7.1 Renderizar a página Inertia `Erro.vue` para 404, 419, 500 e 503 nas rotas do painel (sem detalhes técnicos fora de `local`), mantendo JSON em `/webhooks/asaas`. Pronto quando os testes cobrem 404 com link para o Painel, 419 com "Sua sessão expirou", 500 em produção sem stack trace e o webhook continuando a responder em JSON.
+- [x] 7.1 Renderizar a página Inertia `Erro.vue` para 404, 419, 500 e 503 nas rotas do painel (sem detalhes técnicos fora de `local`), mantendo JSON em `/webhooks/asaas`. Pronto quando os testes cobrem 404 com link para o Painel, 419 com "Sua sessão expirou", 500 em produção sem stack trace e o webhook continuando a responder em JSON.
 
 ## 8. Rotas públicas preservadas
 
