@@ -52,7 +52,7 @@
 
 ## 10. Verificação integrada
 
-- [ ] 10.1 Rodar `php artisan test`, `npm test`, `npm run build` e `openspec validate base-arquitetura --strict`. Pronto quando tudo passa sem falhas.
+- [x] 10.1 Rodar `php artisan test`, `npm test`, `npm run build` e `openspec validate base-arquitetura --strict`. Pronto quando tudo passa sem falhas.
 - [ ] 10.2 Verificar manualmente no navegador, nos dois temas: 320, 375 e 1280 px sem rolagem horizontal, zoom de texto em 200%, navegação só por teclado (pular para o conteúdo, foco visível, menu "Mais") e leitura das áreas por leitor de tela. Pronto quando o resultado está registrado na descrição do PR.
 
 ## Workflow follow-up
