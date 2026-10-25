@@ -57,7 +57,8 @@ context: |
   ## Convenções
   - Código simples e legível, sem abstrações além das pedidas (a interface de drivers de lembrete é intencional).
   - Back: nomes de domínio em português (models, tabelas, colunas, comandos), como na Fase 2.
-  - Front: páginas Inertia em `resources/js/Pages`, componentes em `resources/js/Components`;
+  - Front: páginas Inertia em `resources/js/pages`, layouts em `resources/js/layouts`, componentes em
+    `resources/js/components` (minúsculas, padrão do Inertia 3); TypeScript fixado em ~6.0 (vue-tsc);
     textos de interface em pt-BR.
   - Git: uma branch por change (`change/<nome>`), commits pequenos em português no imperativo, PR para `main`
     com revisão antes do merge; `/opsx:archive` no mesmo PR. Sem push forçado na `main`, sem arquivos compilados.

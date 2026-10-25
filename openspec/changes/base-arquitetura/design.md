@@ -53,13 +53,13 @@ Restrições: produção numa hospedagem compartilhada sem Node; um único usuá
   - `inertiajs/inertia-laravel` ^3, `@inertiajs/vue3` ^3 e `@vitejs/plugin-vue`;
   - a view raiz `resources/views/app.blade.php`;
   - o middleware `HandleInertiaRequests`, que compartilha só `auth.usuario.nome`, `flash.sucesso`/`flash.erro` e `app.nome`.
-- **Organização:** páginas em `resources/js/Pages/<Area>/Index.vue`; layouts em `resources/js/Layouts` (`PainelLayout`, `VisitanteLayout`); componentes em `resources/js/Components`.
+- **Organização:** páginas em `resources/js/pages/<Area>/Index.vue`; layouts em `resources/js/layouts` (`PainelLayout`, `VisitanteLayout`); componentes em `resources/js/components`. As pastas ficam em minúsculas porque esse é o padrão do Inertia 3 (`config/inertia.php`) e dos starter kits atuais.
 - **Sem Ziggy:** os links do painel são poucos e fixos, então um mapa de URLs em `resources/js/navegacao.ts` basta. Reavaliar quando houver muitas rotas com parâmetros.
 
 ### D3. TypeScript com checagem no build
 
 - `npm run build` executa `vue-tsc --noEmit && vite build`.
-- A versão do `typescript` fica fixada na mais recente suportada pelo `vue-tsc` instalado. Hoje o npm aponta TypeScript 7, mas a compatibilidade com o `vue-tsc` precisa ser confirmada na instalação; se não houver, usa-se a última 5.x/6.x.
+- A versão do `typescript` fica fixada em `~6.0`. Confirmado no apply: o `vue-tsc` 3.3 não roda com o TypeScript 7 (versão nativa sem a API JS que o `vue-tsc` usa).
 - Os tipos das props compartilhadas ficam em `resources/js/types/inertia.d.ts`.
 
 ### D4. CSS próprio com tokens em variáveis CSS, sem Tailwind

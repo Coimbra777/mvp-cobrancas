@@ -11,7 +11,7 @@
 ## 2. Inertia + Vue 3 + TypeScript
 
 - [x] 2.1 Instalar `inertiajs/inertia-laravel` ^3, criar `resources/views/app.blade.php` e o middleware `HandleInertiaRequests`, compartilhando apenas `auth.usuario.nome`, `flash` e `app.nome`. Pronto quando um teste de feature com `assertInertia` mostra essas props compartilhadas, e só elas.
-- [ ] 2.2 Instalar `vue`, `@inertiajs/vue3`, `@vitejs/plugin-vue`, `typescript` (versão compatível com o `vue-tsc`, ver D3), `vue-tsc` e `@fontsource-variable/inter`; criar `resources/js/app.ts`, `tsconfig.json` e `resources/js/types/inertia.d.ts`; atualizar `vite.config` e o script `build` para `vue-tsc --noEmit && vite build`. Pronto quando `npm run build` termina sem erro de tipo e gera `public/build/manifest.json`.
+- [x] 2.2 Instalar `vue`, `@inertiajs/vue3`, `@vitejs/plugin-vue`, `typescript` (versão compatível com o `vue-tsc`, ver D3), `vue-tsc` e `@fontsource-variable/inter`; criar `resources/js/app.ts`, `tsconfig.json` e `resources/js/types/inertia.d.ts`; atualizar `vite.config` e o script `build` para `vue-tsc --noEmit && vite build`. Pronto quando `npm run build` termina sem erro de tipo e gera `public/build/manifest.json`.
 - [ ] 2.3 Configurar Vitest (`jsdom`, `@vue/test-utils`, `axe-core`) com o script `npm test` e o helper `semViolacoesDeA11y`. Pronto quando `npm test` roda um teste de exemplo de componente e o helper reprova um botão sem nome acessível.
 
 ## 3. Tokens, tipografia e tema
