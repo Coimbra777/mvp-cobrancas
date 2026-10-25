@@ -6,7 +6,7 @@
 - [x] 1.2 Aplicar no código as mudanças dos guias 10→11, 11→12 e 12→13 que afetam este projeto (dependências, Carbon 3, CSRF `PreventRequestForgery`, `serializable_classes`/`serialization`, PHPUnit 12), mantendo a estrutura atual de pastas. O salto é direto, porque o Composer bloqueia o Laravel 11 por avisos de segurança (ver D1). Pronto quando a lista do que se aplicou está na mensagem do commit.
 - [x] 1.3 Subir direto para Laravel 13 em um único `composer update`. Pronto quando `php artisan about` mostra 13.x e os 24 testes da Fase 2 passam.
 - [x] 1.4 Conferir segurança e avisos após o salto. Pronto quando `composer audit` não aponta avisos e a suíte roda sem deprecações do PHPUnit.
-- [ ] 1.5 Remover `laravel/sanctum`, `routes/api.php` e o carregamento das rotas de API no `RouteServiceProvider`. Pronto quando um teste confirma que `GET /api/user` responde 404 e a suíte toda passa.
+- [x] 1.5 Remover `laravel/sanctum`, `routes/api.php` e o carregamento das rotas de API no `RouteServiceProvider`. Pronto quando um teste confirma que `GET /api/user` responde 404 e a suíte toda passa.
 
 ## 2. Inertia + Vue 3 + TypeScript
 
