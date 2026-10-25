@@ -35,7 +35,7 @@
 ## 6. Casca do painel
 
 - [x] 6.1 Criar `resources/js/navegacao.ts` (áreas, URLs, ícones), `PainelLayout` com sidebar (≥ 1024 px), barra inferior com menu "Mais" (< 1024 px), link "Pular para o conteúdo", troca de tema e "Sair". Pronto quando os testes Vitest cobrem `aria-current` na área atual, abrir/fechar "Mais" com Esc devolvendo o foco e o `axe` da casca.
-- [ ] 6.2 Criar `CabecalhoPagina` (único `h1` com `tabindex="-1"`, data por extenso em America/Fortaleza) e o foco no título a cada navegação do Inertia, com anúncio em região `aria-live`; título da aba "<Área> · Caderneta". Pronto quando um teste com data fixa mostra "domingo, 25 de outubro de 2026" e outro confirma o foco no `h1` após a navegação.
+- [x] 6.2 Criar `CabecalhoPagina` (único `h1` com `tabindex="-1"`, data por extenso em America/Fortaleza) e o foco no título a cada navegação do Inertia, com anúncio em região `aria-live`; título da aba "<Área> · Caderneta". Pronto quando um teste com data fixa mostra "domingo, 25 de outubro de 2026" e outro confirma o foco no `h1` após a navegação.
 - [ ] 6.3 Criar as rotas `/painel`, `/clientes`, `/emprestimos`, `/parcelas`, `/lembretes` e `/configuracoes` dentro de um grupo `auth`, cada uma com página provisória (título + estado vazio "Em construção"), e `/` redirecionando para `/painel`. Pronto quando os testes PHP confirmam o componente Inertia de cada rota para o usuário autenticado e o redirecionamento a `/entrar` para visitantes.
 
 ## 7. Páginas de erro

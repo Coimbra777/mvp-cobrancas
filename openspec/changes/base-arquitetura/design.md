@@ -114,7 +114,7 @@ Valores iniciais, com contraste já calculado (todos os pares de texto ≥ 4,5:1
   - o conteúdo ganha `padding-bottom` igual à altura da barra mais `env(safe-area-inset-bottom)`.
 - **Títulos e foco:**
   - o título da aba vem do `<Head>` do Inertia, com `title: (t) => \`${t} · Caderneta\``;
-  - a cada evento `navigate` do Inertia, o foco vai para o `h1` (`tabindex="-1"`), e uma região `aria-live` anuncia o título.
+  - a cada navegação do Inertia, o foco vai para o `h1` (`tabindex="-1"`) do `CabecalhoPagina` recém-montado, e o leitor de tela anuncia o título ao receber o foco. Ajuste do apply: sem região `aria-live` extra, para não anunciar duas vezes. Na primeira carga o foco não é movido.
 - **Data do cabeçalho:** `Intl.DateTimeFormat('pt-BR', { dateStyle: 'full', timeZone: 'America/Fortaleza' })`, que gera "domingo, 25 de outubro de 2026" independentemente do fuso do aparelho.
 
 ### D8. Autenticação mínima, no padrão do Breeze
